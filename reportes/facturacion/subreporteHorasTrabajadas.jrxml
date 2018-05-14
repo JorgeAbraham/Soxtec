@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="subreporteHorasTrabajadas" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="54ac3e95-8a43-40fa-8668-72d281e3cd0a">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="styleLunes" backcolor="#FFFFFF">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{lunes}.equals("") || $F{lunes}.equals("00:00:00-00:00:00")]]></conditionExpression>
+			<style backcolor="#999900"/>
+		</conditionalStyle>
+	</style>
+	<style name="styleMartes">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{martes}.equals( "" ) || $F{martes}.equals("00:00:00-00:00:00")]]></conditionExpression>
+			<style backcolor="#999900"/>
+		</conditionalStyle>
+	</style>
+	<style name="styleMiercoles">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{miercoles}.equals( "" )  || $F{miercoles}.equals("00:00:00-00:00:00")]]></conditionExpression>
+			<style backcolor="#999900"/>
+		</conditionalStyle>
+	</style>
+	<style name="styleJueves">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{jueves}.equals( "" )  || $F{jueves}.equals("00:00:00-00:00:00")]]></conditionExpression>
+			<style backcolor="#999900"/>
+		</conditionalStyle>
+	</style>
+	<style name="styleViernes">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{viernes}.equals( "" ) || $F{viernes}.equals("00:00:00-00:00:00")]]></conditionExpression>
+			<style backcolor="#999900"/>
+		</conditionalStyle>
+	</style>
+	<style name="styleSabado">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{sabado}.equals( "" ) || $F{sabado}.equals("00:00:00-00:00:00")]]></conditionExpression>
+			<style backcolor="#999900"/>
+		</conditionalStyle>
+	</style>
+	<style name="styleDomingo">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{domingo}.equals( "" ) || $F{domingo}.equals("00:00:00-00:00:00")]]></conditionExpression>
+			<style backcolor="#999900"/>
+		</conditionalStyle>
+	</style>
+	<parameter name="idFactura" class="java.lang.String"/>
+	<parameter name="turnoMatutino" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="turnoVespertino" class="java.lang.Boolean">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="semana" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+
+
+
+		MAX(IF(WEEKDAY(fecha) + 1 = 1,
+					CONCAT(horaEntrada,'-',
+					IF(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE)<='24:00:00',
+						DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),
+						DATE_SUB(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),INTERVAL 24 HOUR)
+					))
+					,'' )) as lunes,
+		MAX(IF(WEEKDAY(fecha) + 1 = 2,
+					CONCAT(horaEntrada,'-',
+					IF(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE)<='24:00:00',
+						DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),
+						DATE_SUB(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),INTERVAL 24 HOUR)
+					))
+					, '' )) as martes,
+		MAX(IF(WEEKDAY(fecha) + 1 = 3,
+					CONCAT(horaEntrada,'-',
+					IF(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE)<='24:00:00',
+						DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),
+						DATE_SUB(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),INTERVAL 24 HOUR)
+					))
+					, '' )) as miercoles,
+		MAX(IF(WEEKDAY(fecha) + 1 = 4,
+					CONCAT(horaEntrada,'-',
+					IF(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE)<='24:00:00',
+						DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),
+						DATE_SUB(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),INTERVAL 24 HOUR)
+					))
+					, '' )) as jueves,
+		MAX(IF(WEEKDAY(fecha) + 1 = 5,
+					CONCAT(horaEntrada,'-',
+					IF(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE)<='24:00:00',
+						DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),
+						DATE_SUB(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),INTERVAL 24 HOUR)
+					))
+					, '' )) as viernes,
+		MAX(IF(WEEKDAY(fecha) + 1 = 6,
+					CONCAT(horaEntrada,'-',
+					IF(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE)<='24:00:00',
+						DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),
+						DATE_SUB(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),INTERVAL 24 HOUR)
+					))
+					, '' )) as sabado,
+		MAX(IF(WEEKDAY(fecha) + 1 = 7,
+					CONCAT(horaEntrada,'-',
+					IF(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE)<='24:00:00',
+						DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),
+						DATE_SUB(DATE_ADD(horaEntrada,INTERVAL horastrabajadas*60 MINUTE),INTERVAL 24 HOUR)
+					))
+					, '' )) as domingo,
+
+					fecha,
+					WEEKOFYEAR(fecha) as semana,
+					turnoMatutino,
+					turnoVespertino,
+					h.idpersona,
+					CONCAT(p.nombre,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as nombre,
+					SUM(horasTrabajadas) as total,
+					IF ( SUM(horasTrabajadas) <= 48, SUM(horasTrabajadas),48) as horasRegulares,
+					IF ( SUM(horasTrabajadas) > 48, SUM(horasTrabajadas)-48,0) as horasExtras
+
+
+
+FROM horastrabajadas h
+INNER JOIN persona p on (h.idPersona=p.idPersona)
+
+WHERE idFactura=$P{idFactura} and turnoMatutino=$P{turnoMatutino} and turnoVespertino=$P{turnoVespertino} and WEEKOFYEAR(fecha)=$P{semana}
+
+
+GROUP BY
+h.idpersona,
+semana,
+turnoMatutino,
+turnoVespertino
+
+ORDER BY
+turnoVespertino,
+semana]]>
+	</queryString>
+	<field name="lunes" class="java.lang.String"/>
+	<field name="martes" class="java.lang.String"/>
+	<field name="miercoles" class="java.lang.String"/>
+	<field name="jueves" class="java.lang.String"/>
+	<field name="viernes" class="java.lang.String"/>
+	<field name="sabado" class="java.lang.String"/>
+	<field name="domingo" class="java.lang.String"/>
+	<field name="fecha" class="java.util.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="semana" class="java.lang.Long"/>
+	<field name="turnoMatutino" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="turnoVespertino" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idpersona" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="total" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="horasRegulares" class="java.lang.Double"/>
+	<field name="horasExtras" class="java.lang.Double"/>
+	<variable name="horasRegulares_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{horasRegulares}]]></variableExpression>
+	</variable>
+	<variable name="horasExtras_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{horasExtras}]]></variableExpression>
+	</variable>
+	<variable name="variable1" class="java.lang.String"/>
+	<columnHeader>
+		<band height="36">
+			<rectangle>
+				<reportElement uuid="f0e839d9-334f-430c-b8c5-cdc2b6d7d8d2" x="322" y="4" width="48" height="11" forecolor="#FFFFFF" backcolor="#D6D0C2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="68beb12d-0ab3-46df-b2fc-dbbc7f8b7949" x="82" y="15" width="429" height="11" forecolor="#FFFFFF" backcolor="#D6D0C2"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="7fcd7157-f1a4-4fb5-b6e7-8ae3c9d80760" x="0" y="26" width="130" height="10" backcolor="#999999"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="969aa3c9-f744-4778-a495-037372c37bed" x="0" y="26" width="82" height="10" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{turnoMatutino}?"1st Shift":"2nd Shift"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="c9d361d2-461e-45f0-8f4d-afc71121bf23" x="418" y="15" width="31" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="4"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="144f6d73-0c1f-4628-b307-7be52f156e22" x="449" y="15" width="31" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="4"/>
+				</textElement>
+				<text><![CDATA[NORMAL HOURS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4febed87-8b7f-4566-a69a-17257da0776f" x="480" y="15" width="31" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="4"/>
+				</textElement>
+				<text><![CDATA[OVERTIME]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="45d9c174-b678-4a4d-a379-1963cfdce52f" x="130" y="26" width="48" height="10" backcolor="#999999"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="6ef32bd4-5ff8-427b-b480-e6e010dd193d" x="178" y="26" width="48" height="10" backcolor="#999999"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="ccc66783-051f-4991-9184-c8c555afb14b" x="226" y="26" width="48" height="10" backcolor="#999999"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="5a95cd2e-ec95-495c-950b-34f4c25b9e21" x="274" y="26" width="48" height="10" backcolor="#999999"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="4bc3be4e-3fba-4a24-b9ab-e69829d34f9e" x="418" y="26" width="31" height="10" backcolor="#999999"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="ac608150-9c1b-46ec-b708-7380ad1de5cd" x="322" y="26" width="48" height="10" backcolor="#999999"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="84686e11-177a-44d2-b04c-9b134c47bc17" x="370" y="26" width="48" height="10" backcolor="#999999"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="33468e4e-67c4-47fd-a406-77da3c10c5d9" x="449" y="26" width="31" height="10" backcolor="#999999"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="46d20ae6-5c01-4cc5-9eeb-3a72f1eb4af8" x="480" y="26" width="31" height="10" backcolor="#999999"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="139215b7-077c-4457-9323-5f54f3360c38" x="322" y="4" width="48" height="11" forecolor="#003399"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("MMMMM",new Locale("us", "US")).format($F{fecha})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="055b90bc-ae17-48f0-9bc4-7f137d81aed6" x="82" y="15" width="48" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA["M-"+
+(
+1+Integer.parseInt(new SimpleDateFormat("d").format($F{fecha}))
+-
+Integer.parseInt(new SimpleDateFormat("u").format($F{fecha}))
+)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4ce920df-d09e-4590-80bc-a34995652bf7" x="130" y="15" width="48" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA["T-"+
+(
+2+Integer.parseInt(new SimpleDateFormat("d").format($F{fecha}))
+-
+Integer.parseInt(new SimpleDateFormat("u").format($F{fecha}))
+)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="47edafa0-24d8-4f71-9c1c-7f2b79dc88b5" x="178" y="15" width="48" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA["W-"+
+(
+3+Integer.parseInt(new SimpleDateFormat("d").format($F{fecha}))
+-
+Integer.parseInt(new SimpleDateFormat("u").format($F{fecha}))
+)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="959e8f7d-f029-4d40-9a36-a4334dcf7989" x="226" y="15" width="48" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA["TH-"+
+(
+4+Integer.parseInt(new SimpleDateFormat("d").format($F{fecha}))
+-
+Integer.parseInt(new SimpleDateFormat("u").format($F{fecha}))
+)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="93b3337b-d827-40ef-96d1-6a886fb23586" x="274" y="15" width="48" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA["F-"+
+(
+5+Integer.parseInt(new SimpleDateFormat("d").format($F{fecha}))
+-
+Integer.parseInt(new SimpleDateFormat("u").format($F{fecha}))
+)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bf34ec16-a671-4def-8c41-9add8e979b35" x="322" y="15" width="48" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SA-"+
+(
+6+Integer.parseInt(new SimpleDateFormat("d").format($F{fecha}))
+-
+Integer.parseInt(new SimpleDateFormat("u").format($F{fecha}))
+)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b9b8232e-c77e-451c-bbf0-ea203e0a3906" x="370" y="15" width="48" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA["SU-"+
+(
+7+Integer.parseInt(new SimpleDateFormat("d").format($F{fecha}))
+-
+Integer.parseInt(new SimpleDateFormat("u").format($F{fecha}))
+)]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="bcae26a3-25cc-4a43-a3d7-a8f59bd605a4" style="styleLunes" x="82" y="0" width="48" height="13"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="f9e6a22e-61e0-4f2d-8f14-aa40c2f526eb" style="styleMartes" x="130" y="0" width="48" height="13"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="91aee311-cd6e-4380-8a71-45c133cccda3" style="styleMiercoles" x="178" y="0" width="48" height="13"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="3ffacf52-2ac1-49da-99ec-c9192b7f6a2d" style="styleJueves" x="226" y="0" width="48" height="13"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="e4009a17-ae99-4deb-bc59-c1e2548d36a9" style="styleSabado" x="322" y="0" width="48" height="13"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="000712ab-d691-45bd-8b36-bf0c66f37dec" style="styleDomingo" x="370" y="0" width="48" height="13"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="2c10fd12-7f19-4b92-ba66-e2a9a7c1c00e" x="418" y="0" width="31" height="13"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="5b672854-ccbb-4d3a-ac6b-39e56d570536" x="449" y="0" width="31" height="13"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="ea9ab55c-ab49-453d-a92c-63ab85f89830" x="480" y="0" width="31" height="13"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="67d8e587-3d0d-4b27-8bc7-4bc7daabdfdc" x="0" y="0" width="82" height="13" backcolor="#003366"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="27be7870-adaf-4d7a-b555-21ef0b60c360" x="130" y="0" width="48" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{martes}.equals("00:00:00-00:00:00")?"":$F{martes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="37c07c6f-5191-4a34-9867-6001721769e7" x="178" y="0" width="48" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{miercoles}.equals("00:00:00-00:00:00")?"":$F{miercoles}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="70f77d56-50ac-4125-ba57-ab0817eaec81" x="226" y="0" width="48" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jueves}.equals("00:00:00-00:00:00")?"":$F{jueves}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="327ac8a1-4307-43b0-9b39-b63c49812e25" x="370" y="0" width="48" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{domingo}.equals("00:00:00-00:00:00")?"":$F{domingo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3e80355f-4bdc-4238-ba55-e2b8e57a64eb" x="322" y="0" width="48" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{sabado}.equals("00:00:00-00:00:00")?"":$F{sabado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="890cf1a2-8ea5-43e9-be91-014d167e0b80" x="418" y="0" width="31" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f37aadf6-d317-4ce8-9c72-4c520d082969" x="449" y="0" width="31" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horasRegulares}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2cbb957f-5791-4028-9558-f28658727791" x="480" y="0" width="31" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{horasExtras}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement uuid="cfb557d0-5252-405d-869a-bf0f389a9b9d" style="styleViernes" x="274" y="0" width="48" height="13"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="1042f469-6b3f-49ed-8a94-2dca91ccafb3" x="274" y="0" width="48" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{viernes}.equals("00:00:00-00:00:00")?"":$F{viernes}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6778ebcb-c367-4391-aed3-dafefe26225f" x="0" y="0" width="82" height="13" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="4"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9bcaf0f9-ce28-4e1e-9186-82bf08113ba6" style="styleLunes" x="82" y="0" width="48" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lunes}.equals("00:00:00-00:00:00")?"":$F{lunes}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="13">
+			<rectangle>
+				<reportElement uuid="b9c4b471-16a6-474d-ad93-157241e42fe0" x="370" y="0" width="48" height="13"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="a04d6cea-3bf1-4ab6-a062-e7c34475a68b" x="418" y="0" width="31" height="13"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="d0fbabc0-b231-4142-aad0-18b1fbaed60b" x="449" y="0" width="31" height="13"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="407df1d7-cd5a-4513-9359-b36567a65113" x="480" y="0" width="31" height="13"/>
+			</rectangle>
+			<textField>
+				<reportElement uuid="042a9ce4-1507-4854-8282-8379fb3df47a" x="449" y="0" width="31" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{horasRegulares_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="01e9a003-7e7f-477d-a4db-53701b622dfc" x="418" y="0" width="31" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{horasRegulares_1}+$V{horasExtras_1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="65a1c3c6-3f78-4180-b16d-949f676cd2d5" x="480" y="0" width="31" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{horasExtras_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="5306424b-dd2c-4332-ba2e-6594ea2c6c1d" x="370" y="0" width="48" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<text><![CDATA[GT]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

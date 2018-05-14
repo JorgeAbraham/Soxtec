@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="facturacionSoxtec" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="851ac263-c58a-4d6e-8b1d-6f549dc42b59">
+	<property name="ireport.zoom" value="0.8250000000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="PRMidFactura" class="java.lang.String"/>
+	<parameter name="PRMfolio" class="java.lang.String"/>
+	<parameter name="PRMdireccion" class="java.lang.String"/>
+	<parameter name="PRMfecha" class="java.lang.String"/>
+	<parameter name="PRMnombre" class="java.lang.String"/>
+	<parameter name="PRMsolicitante" class="java.lang.String"/>
+	<parameter name="PRMpo" class="java.lang.String"/>
+	<parameter name="PRMvendedor" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\Abraham\\Desktop\\Soxtec\\reporteFacturacion\\reporte\\facturacion\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="PRMperiodoInicial" class="java.lang.String"/>
+	<parameter name="PRMperiodoFinal" class="java.lang.String"/>
+	<parameter name="PRMtotal" class="java.lang.String"/>
+	<parameter name="PRMsubtotal" class="java.lang.String"/>
+	<parameter name="PRMtax" class="java.lang.String"/>
+	<parameter name="PRMexpTram" class="java.lang.String"/>
+	<parameter name="PRMlugar" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select idFactura,turnoMatutino,turnoVespertino,WEEKOFYEAR(fecha) as semana from horastrabajadas
+WHERE idFactura=$P{PRMidFactura}
+group by
+WEEKOFYEAR(fecha),turnoMatutino,turnoVespertino]]>
+	</queryString>
+	<field name="idFactura" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="turnoMatutino" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="turnoVespertino" class="java.lang.Boolean">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="semana" class="java.lang.Long"/>
+	<title>
+		<band height="644" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="ff1b5352-f9ce-481d-8ffb-eb009c4312cf" x="472" y="547" width="100" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="294d8122-dec8-4c33-a484-5451bce83acf" x="472" y="607" width="100" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="8be5c7fe-9bc3-4379-abaa-7de5adcddd32" x="472" y="567" width="100" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="42a79534-9747-49c8-9724-aa83eb55898b" x="472" y="587" width="100" height="20"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="181b0715-c5c7-4f3a-b888-d8301c710fa4" x="391" y="547" width="78" height="80" backcolor="#808080"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="0d8fd0bb-9737-4ed9-9a7f-f5061a32d8dc" x="0" y="547" width="342" height="93" backcolor="#000064"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="4626ec84-311b-40aa-b469-152e4bee89a5" x="489" y="228" width="83" height="139"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="b450474c-6b44-4283-9ec7-45815fbe63d8" x="392" y="228" width="97" height="139"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="0c37becd-2dae-4008-9357-98b316f6a770" x="88" y="228" width="304" height="139"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="ba2ade65-a0fe-4970-bcc5-211e52d209df" x="0" y="228" width="88" height="139"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="6ee05875-bd01-4b06-97be-f5699f0e4c1a" x="0" y="228" width="86" height="20" backcolor="#000064"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="7dc6ea7b-bf15-4172-90ae-68b76be6c02a" x="0" y="107" width="483" height="115"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="34cd0308-ee79-4c97-b659-3ee87a5bc00f" x="486" y="107" width="86" height="115"/>
+			</rectangle>
+			<rectangle>
+				<reportElement uuid="e28d36fb-ed27-4bf3-b96a-d901d1cee4c0" x="0" y="107" width="86" height="15" backcolor="#808080"/>
+			</rectangle>
+			<image>
+				<reportElement uuid="beda0f6f-cb31-4f0e-b266-d22ace78c435" x="0" y="0" width="174" height="74"/>
+				<imageExpression><![CDATA["C:\\Users\\Abraham\\Desktop\\Soxtec\\reporteFacturacion\\imagenes\\logoSoxtec.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="18281a62-3d4d-48ec-9b4b-966b704b18da" x="224" y="41" width="131" height="20"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOXTEC SA DE CV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="379b37c9-d614-4989-b6eb-25834ab40a03" x="106" y="74" width="363" height="33"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Calle Tenochtitlan #143  Colonia Valle de Huinala
+ Apodaca  Nuevo Leon,  Zip Code  66634]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="7a1cb01e-1eb2-4273-9199-03a493051de6" x="0" y="107" width="73" height="15" forecolor="#FFFFFF"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAME]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="ed6115de-8714-4008-bd3b-e7269b06c5a9" x="0" y="142" width="86" height="15" backcolor="#808080"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="fb9626d2-22d5-462d-9aef-199923716ef5" x="0" y="142" width="73" height="15" forecolor="#FFFFFF"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[ADDRESS]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="82f7e8ad-5ba4-45be-af3e-9c6348b780aa" x="0" y="180" width="86" height="15" backcolor="#808080"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="e14e2109-48d5-4f29-b0a7-6b84d86153f5" x="0" y="180" width="73" height="15" forecolor="#FFFFFF"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REQUESTOR]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="76ef9172-c21c-4ecf-9f3a-6820a9c60852" x="0" y="207" width="86" height="15" backcolor="#808080"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="5734d79d-ed4e-4385-97f0-8cb68b6dd35f" x="0" y="207" width="73" height="15" forecolor="#FFFFFF"/>
+				<textElement>
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PO]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="d9dfdaa3-4ec5-4f58-bd51-43c3ad1872ed" x="269" y="207" width="86" height="15" backcolor="#808080"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="68a6fa6c-7ea4-48ea-899c-b67fd9b52e54" x="269" y="207" width="73" height="15" forecolor="#FFFFFF"/>
+				<textElement>
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[VENDOR #:]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="74f53063-b217-4c34-8aed-c1abcdabb26e" x="486" y="122" width="86" height="35" backcolor="#808080"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="b26a410b-f085-4de6-a64e-f44944e5b95a" x="486" y="107" width="86" height="15"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[INVOICE]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="d2cd977f-77f3-4a81-8ce3-e5fb691ed7a3" x="486" y="167" width="86" height="17" backcolor="#808080"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="b80b4cb7-0e17-4f22-89ee-46b6ca055d60" x="486" y="167" width="86" height="15" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[DATE]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement uuid="bf5b4f5e-07a1-4f1e-a689-1a085833d1f4" x="86" y="230" width="486" height="15" backcolor="#000064"/>
+			</rectangle>
+			<staticText>
+				<reportElement uuid="79c7161a-95d8-45df-ac58-e4968f851afe" x="0" y="230" width="86" height="15" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[QUANTITY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="00c3a291-f867-4c9e-9595-4656a019f551" x="88" y="230" width="304" height="15" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[DESCRIPTION]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="722b7193-17b2-4575-a695-af3b853e99fb" x="392" y="230" width="83" height="15" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[UNIT PRICE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="09c8da5a-71e0-40e7-aa69-b7dc628e7a62" x="489" y="230" width="83" height="15" forecolor="#FFFFFF"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="1f10c305-7b35-443b-8d29-1288a183a776" x="489" y="130" width="80" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{PRMfolio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9ddc1c16-a668-4740-80f1-0f56d50067e9" x="106" y="142" width="377" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{PRMdireccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cb59b5e4-802e-49a3-ad78-43694932edc6" x="489" y="193" width="80" height="20"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$P{PRMfecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1c1ee4a5-74ec-4352-a2b9-c809aef7e5e6" x="106" y="180" width="377" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{PRMsolicitante}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="92d63e59-69c9-462f-be80-4548c4ed3959" x="106" y="207" width="118" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{PRMpo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5cd8a644-34af-4c06-9e55-22d1da0b8eb7" x="369" y="207" width="100" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{PRMvendedor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a8c06379-e3f3-471e-9df2-19f417309bfd" x="106" y="107" width="377" height="15"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$P{PRMnombre}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement uuid="00ee4366-1f59-4df3-ac0b-d36a5568cd9d" x="88" y="258" width="304" height="109"/>
+				<subreportParameter name="PRMidFactura">
+					<subreportParameterExpression><![CDATA[$P{PRMidFactura}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subreporteConceptoPrincipal.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement uuid="c4d5d00f-9d2e-4eaf-9994-ffef433af944" x="0" y="367" width="572" height="154"/>
+				<subreportParameter name="idFactura">
+					<subreportParameterExpression><![CDATA[$P{PRMidFactura}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subreporteConceptosAdicionales.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement uuid="ae44174b-3726-493b-9524-bd93405526a3" x="0" y="547" width="342" height="93" forecolor="#FFFFFF"/>
+				<textElement>
+					<font size="10" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[PAYMENT DETAILS:
+Please wire the money at the following bank account:
+Bank Name: Banorte
+Bank routing number (CLABE): 07258000837184614 2
+Bank Swift Code: MENOMXMT
+Account Number: 837184614
+Name:   Soxtec SA de CV		]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f39bc42b-a1ef-47df-9afe-7b68b7a08f99" x="18" y="527" width="70" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[PERIOD OF:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e101d25b-9a05-407c-8674-28ada561ac7c" x="224" y="527" width="37" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TO]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="749d279f-7af6-4976-a3fd-229f8a1cb0e2" x="97" y="527" width="118" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PRMperiodoInicial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="13a5b978-302f-4c73-87fe-7d202ae34c4f" x="269" y="527" width="162" height="20"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{PRMperiodoFinal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="1e0ef2b7-c1a3-403f-9e89-ecce26a8603f" x="391" y="547" width="78" height="20" forecolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[SUBTOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="cf0e3352-aa6b-49e3-aa42-9390f9ca5f39" x="391" y="567" width="78" height="20" forecolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[EXP & TRAM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9a2d381c-f886-42ca-8ead-53ff45c31bd5" x="391" y="587" width="78" height="20" forecolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[TAX]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f867be1b-8144-4ff5-a77f-31a3350c95c3" x="391" y="607" width="78" height="20" forecolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="9782dc68-d3bd-4c6b-befc-f5c9359564a8" x="475" y="567" width="94" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PRMexpTram}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bf31b139-8d94-4d5c-834e-04b250fcbefb" x="475" y="547" width="94" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PRMsubtotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="76f6875a-733f-44ac-9fe6-a9c21df39387" x="475" y="607" width="94" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PRMtotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a32d3e6b-7e06-4f2d-b2de-148ff429f588" x="475" y="587" width="94" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PRMtax}]]></textFieldExpression>
+			</textField>
+			<break>
+				<reportElement uuid="cde84f28-bd62-4a61-b580-d453b100a573" x="0" y="643" width="100" height="1"/>
+			</break>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="108">
+			<image>
+				<reportElement uuid="1608c334-79a2-458f-a1f9-4b4faec11f9f" x="0" y="0" width="224" height="107"/>
+				<imageExpression><![CDATA["C:\\Users\\Abraham\\Desktop\\Soxtec\\reporteFacturacion\\imagenes\\logoSoxtec.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement uuid="3e632a0a-7e68-4272-b90e-9a1d13415ef7" x="383" y="15" width="100" height="20" forecolor="#000066"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{PRMlugar}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="138">
+			<subreport>
+				<reportElement uuid="07797e82-b69a-4f74-8518-b83dcd7e9ca3" x="3" y="0" width="569" height="138"/>
+				<subreportParameter name="idFactura">
+					<subreportParameterExpression><![CDATA[$F{idFactura}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="turnoMatutino">
+					<subreportParameterExpression><![CDATA[$F{turnoMatutino}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="turnoVespertino">
+					<subreportParameterExpression><![CDATA[$F{turnoVespertino}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="semana">
+					<subreportParameterExpression><![CDATA[$F{semana}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "subreporteHorasTrabajadas.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>
