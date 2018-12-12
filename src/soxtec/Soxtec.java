@@ -24,24 +24,30 @@ public class Soxtec {
     public static void main(String[] args) {
         
         
-        try 
-        {
-                NimRODTheme nt = new NimRODTheme( "lookAndFeel/Night.theme");
-
-                NimRODLookAndFeel nf = new NimRODLookAndFeel();
-                nf.setCurrentTheme( nt);
-                UIManager.setLookAndFeel( nf);
-        }
-        catch (Exception e)
-        {
-
+        
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Soxtec.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Soxtec.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Soxtec.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Soxtec.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         
         
         Instacia I=new Instacia();
-        ManejadorDeDatos M=new ManejadorDeDatos();
+        ManejadorDeDatos M=new ManejadorDeDatos(/*ManejadorDeDatos.IP_LOCAL*/);
         acceso_ifz A=new acceso_ifz();
         A.setVisible(true);
+     
     }
     
 }

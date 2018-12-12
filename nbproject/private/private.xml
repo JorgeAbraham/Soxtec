@@ -2,6 +2,13 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/Controlador/AbrirVistas.java</file>
+            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/Controlador/Acceso/Acceso.java</file>
+            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/interfaces/factura_ifz.java</file>
+            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/Controlador/Insumos/Insumos.java</file>
+            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/interfaces/insumos_ifz.java</file>
+            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/instancias/session.java</file>
+        </group>
     </open-files>
 </project-private>
