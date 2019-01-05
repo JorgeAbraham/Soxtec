@@ -3,12 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/Controlador/AbrirVistas.java</file>
-            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/Controlador/Acceso/Acceso.java</file>
-            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/interfaces/factura_ifz.java</file>
-            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/Controlador/Insumos/Insumos.java</file>
-            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/interfaces/insumos_ifz.java</file>
-            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/instancias/session.java</file>
+            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/Controlador/Requisiciones/Revision.java</file>
+            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/interfaces/requerimientos_ifz.java</file>
+            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/interfaces/menu_ifz.java</file>
+            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/interfaces/aprobacion_ifz.java</file>
+            <file>file:/C:/Program%20Soxtec/ProgramasJava/Soxtec/src/Controlador/Requisiciones/Requisiciones.java</file>
         </group>
     </open-files>
 </project-private>

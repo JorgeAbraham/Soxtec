@@ -11,6 +11,7 @@ import instancias.Instacia;
 import interfaces.acceso_ifz;
 import javax.swing.UIManager;
 import serviciosBD.ManejadorDeDatos;
+import utilidadesbasicas.archivoProperties;
 
 /**
  *
@@ -44,7 +45,9 @@ public class Soxtec {
         
         
         Instacia I=new Instacia();
-        ManejadorDeDatos M=new ManejadorDeDatos(/*ManejadorDeDatos.IP_LOCAL*/);
+        
+        archivoProperties P=new archivoProperties("databaseConection.properties");
+        ManejadorDeDatos M=new ManejadorDeDatos(P);
         acceso_ifz A=new acceso_ifz();
         A.setVisible(true);
      

@@ -8,6 +8,7 @@ package Controlador;
 import instancias.session;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import javax.swing.JOptionPane;
 import serviciosBD.peticiones_web_servicio;
 
 /**
@@ -22,7 +23,14 @@ public class AbrirVistas {
         peticion.setNombreVista(nombreControlador);
         peticion.setIdUsuario(session.idUsuario);
         peticion.getVistasPorNombre();
-        AbrirVistas abrirVistas = new AbrirVistas(peticion);
+        
+        if (peticion.getControlador()!=null){
+            AbrirVistas abrirVistas = new AbrirVistas(peticion);
+        }else{
+            JOptionPane.showMessageDialog(null, "No tiene Permiso para abrir esta opcion");
+        }
+        
+        
     }
     
     public AbrirVistas(){
@@ -52,8 +60,9 @@ public class AbrirVistas {
                             metodo2.invoke(   instancia    );
 
                          } 
-                     catch (InstantiationException | IllegalAccessException ex) {
+                     catch (InstantiationException | IllegalAccessException  ex) {
                          ex.printStackTrace();
+                        
                      }
                  } 
                  catch (IllegalArgumentException | InvocationTargetException ex) {
@@ -66,6 +75,7 @@ public class AbrirVistas {
          } 
          catch (ClassNotFoundException ex) {
              ex.printStackTrace();
+              JOptionPane.showMessageDialog(null, "Aun no implementado. Solicite acceso en www.soxtec.com.mx en el boton de IntraNET");
          }
         
         

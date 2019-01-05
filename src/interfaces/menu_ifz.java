@@ -8,11 +8,25 @@ package interfaces;
 import Controlador.AbrirVistas;
 import instancias.Instacia;
 import instancias.session;
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.StringTokenizer;
 import javafx.scene.Scene;
 import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import serviciosBD.peticiones_web_servicio;
 
 /**
@@ -34,49 +48,63 @@ public class menu_ifz extends javax.swing.JFrame {
         lbl_nombre.setText(Instacia.persona_srv.getNombre()+" "+Instacia.persona_srv.getApellidoPaterno()+" "+Instacia.persona_srv.getApellidoMaterno());
         
         
+        DefaultMutableTreeNode SoxtecRoot = new DefaultMutableTreeNode("Soxtec");
+        DefaultTreeModel modelo = new DefaultTreeModel(SoxtecRoot);
+        
+        jTree1.setModel(modelo);
+      
+        
+        
+        
         serviciosBD.peticiones_web_servicio vista=new peticiones_web_servicio();
         vista.setIdTipoVista(peticiones_web_servicio.menuPrincipal);
         vista.setIdUsuario(  (String)session.getAttribute("idUsuario")    );
         vista.setIdTipoVista(peticiones_web_servicio.menuPrincipal);
-        menu = vista.getVistasPoridTipoVista();
-        botonesDeMenu=new JButton[menu.length];
+        
+        
+        String MenusPadre[][]=vista.getVistasPoridTipoVista(peticiones_web_servicio.menuSecundario+"");
+        
+        String RelacionesMenu[][]=vista.getVistasPorRelacion("1");
+        
+        
+        for (int i=0;i<MenusPadre.length;i++){
+            
+            DefaultMutableTreeNode nodoPadre = new DefaultMutableTreeNode(MenusPadre[i][5]);
+            modelo.insertNodeInto(nodoPadre,SoxtecRoot,i);
+            
+            
+            for (int j=0 ;j<RelacionesMenu.length;j++){
+                if (RelacionesMenu[j][0].equals(MenusPadre[i][0])){
+                    
+                    
+                    DefaultMutableTreeNode nodoHijo = new DefaultMutableTreeNode(RelacionesMenu[j][3]);
+                    modelo.insertNodeInto(nodoHijo,nodoPadre,nodoPadre.getChildCount());
+                   
+                   
+                    
+                }
+            }
+            
+        } 
         
         
         
         
-        StringTokenizer tok;
-        
-         
-         
-         
-        for (int i=0;i<menu.length;i++){ 
-            
-            
-            tok=new StringTokenizer(menu[i][5], "<>", false);
-          
-            tok.nextToken();
-            tok.nextToken();
-            String label= tok.nextToken();
-            
-            System.out.println(label);
-            
-            botonesDeMenu[i]=new JButton();
-            
-            botonesDeMenu[i].setText(label);
-            
-            EventoControlador eventoBorrar=new EventoControlador(menu[i][1]);
-            botonesDeMenu[i].addActionListener(eventoBorrar);
-            
-            
-            panelMenu.add(botonesDeMenu[i]);
-              
-        }
         
         
+     
         
+        EventoControlador eventoEntrar=new EventoControlador();
+        jTree1.addMouseListener(eventoEntrar);
+        
+        
+       
     }
 
-    public class EventoControlador implements java.awt.event.ActionListener{
+   
+    
+    
+    public class EventoControlador implements MouseListener{
 
         String nombreControlador;
 
@@ -84,12 +112,72 @@ public class menu_ifz extends javax.swing.JFrame {
             this.nombreControlador=nombreControlador;
         }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-       
-            AbrirVistas vista=new AbrirVistas();
-            vista.controlador(nombreControlador);
+        private EventoControlador() {
+            
         }
+
+     
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            
+            
+          
+         
+            
+            if(e.getClickCount()==2){
+                    TreePath tp;
+                    tp = jTree1.getPathForLocation(e.getX(), e.getY());
+
+                    if (tp != null){
+                       
+                        String nodoSeleccionado=jTree1.getSelectionPath()+"";
+                        
+                        StringTokenizer tok=new StringTokenizer( nodoSeleccionado,",]",false   );
+
+                        
+                        
+                        if (tok.countTokens()==3){
+                        
+                            tok.nextToken();
+                            tok.nextToken();
+                            String aliasVista=tok.nextToken();
+                            aliasVista=aliasVista.substring(1, aliasVista.length());
+                            peticiones_web_servicio peticion=new peticiones_web_servicio();
+                            String Vista[][]=peticion.getVistasPorAliasVisible(aliasVista);
+                            
+                           
+                            
+                            AbrirVistas vista=new AbrirVistas();
+                            vista.controlador(Vista[0][1]);
+                        
+                        }
+                        
+                        
+                        
+                    }
+                    
+            }
+            
+            
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+        }
+
+       
         
     }
     
@@ -103,81 +191,31 @@ public class menu_ifz extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jPanel1 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        panelMenu = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
         jLabel1 = new javax.swing.JLabel();
         lbl_nombre = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jButton2.setText("Invoices");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
+        jScrollPane3.setViewportView(jTree1);
 
-        jButton3.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jButton3.setText("Invoicing Status");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        jButton4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jButton4.setText("GQRS");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(46, 46, 46)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(271, Short.MAX_VALUE))
-        );
-
-        jScrollPane1.setViewportView(jPanel1);
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logoSoxtec.jpg"))); // NOI18N
-
-        panelMenu.setLayout(new java.awt.GridLayout(0, 1, 1, 10));
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Welcome");
-        panelMenu.add(jLabel1);
 
-        lbl_nombre.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        lbl_nombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         lbl_nombre.setText("jLabel2");
-        panelMenu.add(lbl_nombre);
 
-        jScrollPane2.setViewportView(panelMenu);
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mundo.jpg"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -185,60 +223,55 @@ public class menu_ifz extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 436, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(94, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(57, 57, 57))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbl_nombre, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(51, 51, 51))
+                    .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(71, 71, 71)))
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 723, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addComponent(jScrollPane2))
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lbl_nombre, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)
+                        .addGap(7, 7, 7)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 639, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 11, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-         this.dispose();
-        factura_ifz F=new factura_ifz();
-        F.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        this.dispose();
-        estado_facturacion_ifz F=new estado_facturacion_ifz();
-        F.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        this.dispose();
-        gqrs_ifz F=new gqrs_ifz();
-        F.setVisible(true);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        nomina_ifz N=new nomina_ifz();
+        N.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTree jTree1;
     private javax.swing.JLabel lbl_nombre;
-    private javax.swing.JPanel panelMenu;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="requisicionesGeneral" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="016c3770-7880-4562-a8b3-6bdee4606bc7">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="idOperacion" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Program Soxtec\\ProgramasJava\\Soxtec\\reportes\\requisiciones\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMAGEREPORTDIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+	o.idOperacion
+	,o.idEstadoOperacion
+	,o.fechaCreacion
+	,o.fechaModificacion
+	,o.idusuarios
+	,valor0
+	,valor1
+	,valor2
+	,valor3
+
+	,valor4.CentroDeCosto
+	,valor5.fechaDeEntrega
+	,valor6.responsable
+	,  estado.EstadoNombre
+FROM    Operacion o
+
+
+
+
+LEFT JOIN 	(      SELECT    o.idOperacion,(            IF(                c0.idConcepto = 143 , 		(                      IF (                        co0.valorTexto IS NOT NULL ,                        co0.valorTexto,                        IF (                            co0.valorNumerico IS NOT NULL ,                            co0.valorNumerico,                            IF (                                co0.valorFecha IS NOT NULL ,                                co0.valorFecha,NULL                            )                        )                    ) 		), 		NULL               )  	            ) AS valor0         FROM Operacion o        INNER JOIN pertenenciadevalores pv0 on (o.idOperacion=pv0.idOperacion)          INNER JOIN concepto c0 on c0.idConcepto = pv0.idConcepto   AND  (c0.idConcepto=143 )          INNER JOIN conceptooperacion co0 on co0.idConceptoOperacion = pv0.idConceptoOperacion      ) AS valor0   ON o.idOperacion  =  valor0.idOperacion
+
+
+
+
+LEFT JOIN 	(      SELECT    o.idOperacion,(            IF(                c1.idConcepto = 2 , 		(                      IF (                        co1.valorTexto IS NOT NULL ,                        co1.valorTexto,                        IF (                            co1.valorNumerico IS NOT NULL ,                            co1.valorNumerico,                            IF (                                co1.valorFecha IS NOT NULL ,                                co1.valorFecha,NULL                            )                        )                    ) 		), 		NULL               )  	            ) AS valor1         FROM Operacion o        INNER JOIN pertenenciadevalores pv1 on (o.idOperacion=pv1.idOperacion)          INNER JOIN concepto c1 on c1.idConcepto = pv1.idConcepto   AND  (c1.idConcepto=2 )          INNER JOIN conceptooperacion co1 on co1.idConceptoOperacion = pv1.idConceptoOperacion      ) AS valor1   ON o.idOperacion  =  valor1.idOperacion
+
+
+
+
+LEFT JOIN 	(      SELECT    o.idOperacion,(            IF(                c2.idConcepto = 4 , 		(                      IF (                        co2.valorTexto IS NOT NULL ,                        co2.valorTexto,                        IF (                            co2.valorNumerico IS NOT NULL ,                            co2.valorNumerico,                            IF (                                co2.valorFecha IS NOT NULL ,                                co2.valorFecha,NULL                            )                        )                    ) 		), 		NULL               )  	            ) AS valor2         FROM Operacion o        INNER JOIN pertenenciadevalores pv2 on (o.idOperacion=pv2.idOperacion)          INNER JOIN concepto c2 on c2.idConcepto = pv2.idConcepto   AND  (c2.idConcepto=4 )          INNER JOIN conceptooperacion co2 on co2.idConceptoOperacion = pv2.idConceptoOperacion      ) AS valor2   ON o.idOperacion  =  valor2.idOperacion
+
+
+
+
+LEFT JOIN 	(      SELECT    o.idOperacion,(            IF(                c3.idConcepto = 10 , 		(                      IF (                        co3.valorTexto IS NOT NULL ,                        co3.valorTexto,                        IF (                            co3.valorNumerico IS NOT NULL ,                            co3.valorNumerico,                            IF (                                co3.valorFecha IS NOT NULL ,                                co3.valorFecha,NULL                            )                        )                    ) 		), 		NULL               )  	            ) AS valor3         FROM Operacion o        INNER JOIN pertenenciadevalores pv3 on (o.idOperacion=pv3.idOperacion)          INNER JOIN concepto c3 on c3.idConcepto = pv3.idConcepto   AND  (c3.idConcepto=10 )          INNER JOIN conceptooperacion co3 on co3.idConceptoOperacion = pv3.idConceptoOperacion      ) AS valor3   ON o.idOperacion  =  valor3.idOperacion
+
+
+
+
+
+
+
+
+
+LEFT JOIN 	(
+SELECT
+o.idOperacion,
+ cat.valor as CentroDeCosto
+FROM Operacion o
+INNER JOIN pertenenciadevalores pv4 on (o.idOperacion=pv4.idOperacion)
+INNER JOIN concepto c4 on c4.idConcepto = pv4.idConcepto   AND  (c4.idConcepto=139 )
+INNER JOIN conceptooperacion co4 on co4.idConceptoOperacion = pv4.idConceptoOperacion
+ INNER JOIN catalogo cat on (   co4.valorTexto = cat.idCatalogo )
+   ) AS valor4   ON o.idOperacion  =  valor4.idOperacion
+
+
+
+
+LEFT JOIN 	(
+SELECT
+o.idOperacion,
+ valorFecha as fechaDeEntrega
+FROM Operacion o
+INNER JOIN pertenenciadevalores pv5 on (o.idOperacion=pv5.idOperacion)
+INNER JOIN concepto c5 on c5.idConcepto = pv5.idConcepto   AND  (c5.idConcepto=3 )
+INNER JOIN conceptooperacion co5 on co5.idConceptoOperacion = pv5.idConceptoOperacion
+
+   ) AS valor5   ON o.idOperacion  =  valor5.idOperacion
+
+
+LEFT JOIN 	(
+SELECT
+o.idOperacion,
+CONCAT(p.nombre,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as responsable
+FROM Operacion o
+INNER JOIN pertenenciadevalores pv6 on (o.idOperacion=pv6.idOperacion)
+INNER JOIN concepto c6 on c6.idConcepto = pv6.idConcepto   AND  (c6.idConcepto=5 )
+INNER JOIN conceptooperacion co6 on co6.idConceptoOperacion = pv6.idConceptoOperacion
+INNER JOIN persona p  on co6.valorTexto = p.idPersona
+
+   ) AS valor6   ON o.idOperacion  =  valor6.idOperacion
+
+
+
+
+
+
+LEFT JOIN 	(               SELECT o.idOperacion,   eo.estado as EstadoNombre    FROM Operacion o        INNER JOIN  estadooperacion eo on o.idEstadoOperacion = eo.idEstadoOperacion     ) AS estado  ON o.idOperacion  =  estado.idOperacion
+
+
+WHERE o.idOperacion=$P{idOperacion}]]>
+	</queryString>
+	<field name="idOperacion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idEstadoOperacion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaCreacion" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaModificacion" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idusuarios" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor0" class="java.lang.String"/>
+	<field name="valor1" class="java.lang.String"/>
+	<field name="valor2" class="java.lang.String"/>
+	<field name="valor3" class="java.lang.String"/>
+	<field name="CentroDeCosto" class="java.lang.String"/>
+	<field name="fechaDeEntrega" class="java.sql.Timestamp"/>
+	<field name="responsable" class="java.lang.String"/>
+	<field name="EstadoNombre" class="java.lang.String"/>
+	<detail>
+		<band height="752" splitType="Stretch">
+			<rectangle>
+				<reportElement x="1" y="0" width="572" height="731" uuid="063d96aa-3d1f-4d69-9947-1821d2ac9180"/>
+				<graphicElement>
+					<pen lineWidth="3.0"/>
+				</graphicElement>
+			</rectangle>
+			<image>
+				<reportElement x="11" y="10" width="152" height="58" uuid="e5f62c2d-22ed-4729-8456-1579e580ef36"/>
+				<imageExpression><![CDATA[$P{IMAGEREPORTDIR}+"logoSoxtec.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="212" y="10" width="100" height="20" uuid="16aa558f-f6f0-4722-9d30-cb0a09225049"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Soxtec S.A. de C.V.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="181" y="30" width="171" height="20" uuid="0c779ab0-d680-4dff-8cb6-c44682ce749c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Calle Tenochtitlan Número 143]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="163" y="48" width="202" height="20" uuid="3c930524-45f9-4838-9f52-8a6305d392d3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Colonia Valle de Huinala. Apodaca N.L.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="212" y="68" width="100" height="20" uuid="1f0eedea-4212-47f6-9e2e-4736661cca0d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codigo Postal 66634]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="212" y="88" width="100" height="20" uuid="ae581be8-9662-46a1-acdb-0b9562ba5992"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[SOX0908277X3]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="451" y="28" width="100" height="20" uuid="613d6bb8-c698-4380-b49d-a7922eb39fef"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{valor0}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="66" y="157" width="199" height="20" uuid="7f98578a-88e1-4f99-8649-2a9a458cf134"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{valor1}.substring(0,10)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="66" y="177" width="199" height="60" uuid="0d89ddf4-87d0-4ef7-9e85-2f381e118b1e"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$F{valor2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="451" y="48" width="100" height="20" uuid="fe3b3789-dedf-4f2f-8ed8-49c6a36f3cba"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textFieldExpression><![CDATA[$F{EstadoNombre}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="11" y="177" width="55" height="60" uuid="42deacca-db74-400c-9839-8dc310f2009e"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Descripción:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="157" width="55" height="20" uuid="75ec83d5-293d-4108-bd18-5608164d112d"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="28" width="41" height="20" uuid="3134e747-8098-4add-93cc-352608fdda3d"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<text><![CDATA[No. Req.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="265" y="157" width="145" height="20" uuid="b3655788-2338-4efc-b039-2316c89f6316"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Centro de Costo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="265" y="177" width="145" height="20" uuid="9930f0db-6e46-45ac-afdc-945287bc3ed8"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Responsable de la compra:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="265" y="197" width="145" height="20" uuid="0745c037-7f18-43d9-b0f5-7b366edd9b74"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Fecha de entrega:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="48" width="41" height="20" uuid="c14100b7-05ea-4e94-bdb5-f91cbdb6a12f"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<text><![CDATA[Status:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="410" y="177" width="162" height="20" uuid="acb5c081-c380-4b0b-bdb5-2c497fed944c"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{responsable}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="157" width="162" height="20" uuid="6e432b8b-4f17-4d47-877a-4c23f72aa3bd"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CentroDeCosto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="197" width="162" height="20" uuid="ed7530de-6433-4f8e-ba85-061432e04b52"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{fechaDeEntrega}.substring(0,10)]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="0" y="237" width="572" height="298" uuid="54998d78-7b91-48f0-9d80-8b533eae3e45"/>
+				<subreportParameter name="parameter1">
+					<subreportParameterExpression><![CDATA[$F{idOperacion}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "requisicionesDetalle.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement x="265" y="217" width="145" height="20" uuid="8e33e223-e52c-45cb-8a42-c72b3afb6891"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="410" y="217" width="162" height="20" uuid="27e8970c-a253-4f7e-acf4-fccbf1bec47c"/>
+				<box>
+					<pen lineWidth="0.25"/>
+					<topPen lineWidth="0.25"/>
+					<leftPen lineWidth="0.25"/>
+					<bottomPen lineWidth="0.25"/>
+					<rightPen lineWidth="0.25"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{valor3}))]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="147" width="571" height="1" uuid="fd95328f-ed31-459b-95bf-76bacf0f6cbd"/>
+			</line>
+			<subreport>
+				<reportElement x="1" y="553" width="573" height="139" uuid="568e4f50-3ec0-49a4-9157-993aff754b24"/>
+				<subreportParameter name="idOperacion">
+					<subreportParameterExpression><![CDATA[$F{idOperacion}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "requisicionesRevision.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="163" y="115" width="190" height="20" uuid="9658d96f-9c3d-4a11-9663-1df07f7154c8"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EstadoNombre}.equals("Solicitud") ? "REQUISICIÓN":
+$F{EstadoNombre}.equals("En proceso") ? "REQUISICIÓN":
+$F{EstadoNombre}.equals("Aprobado") ? "ORDEN DE COMPRA":
+$F{EstadoNombre}.equals("Rechazada") ? "REQUISICIÓN RECHAZADA":
+$F{EstadoNombre}.equals("Aplicado") ? "FACTURA":
+$F{EstadoNombre}.equals("Por comprobar") ? "FACTURA SIN COMPROBACIÓN":
+$F{EstadoNombre}.equals("Comprobación Rechazada") ? "FACTURA SIN COMPROBACIÓN":
+$F{EstadoNombre}.equals("Comprobado") ? "FACTURA COMPROBADA":""]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
