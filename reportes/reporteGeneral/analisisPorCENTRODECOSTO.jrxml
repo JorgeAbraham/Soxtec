@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="requisicionesGeneral" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="016c3770-7880-4562-a8b3-6bdee4606bc7">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Program Soxtec\\ProgramasJava\\Soxtec\\reportes\\reporteGeneral\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMAGEREPORTDIR" class="java.lang.String"/>
+	<parameter name="centroDeCostoInicial" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="centroDeCostoFinal" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="estado" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="anio" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	o.idOperacion
+	,o.idEstadoOperacion
+	,o.fechaCreacion
+	,o.fechaModificacion
+	,o.idusuarios
+	,valor0
+	,valor1
+	,valor2
+	,SUM(valor3) AS valor3
+
+	,valor4.CentroDeCosto
+	,valor5.fechaDeEntrega
+	,valor6.responsable
+	,  estado.EstadoNombre
+	, MONTH(valor1) as MES
+	, SUM(IF ( MONTH(valor1) = 1 , valor3 , 0 )) AS ENE
+	, SUM(IF ( MONTH(valor1) = 2 , valor3 , 0 )) AS FEB
+	, SUM(IF ( MONTH(valor1) = 3 , valor3 , 0 )) AS MAR
+	, SUM(IF ( MONTH(valor1) = 4 , valor3 , 0 )) AS ABR
+	, SUM(IF ( MONTH(valor1) = 5 , valor3 , 0 )) AS MAY
+	, SUM(IF ( MONTH(valor1) = 6 , valor3 , 0 )) AS JUN
+	, SUM(IF ( MONTH(valor1) = 7 , valor3 , 0 )) AS JUL
+	, SUM(IF ( MONTH(valor1) = 8 , valor3 , 0 )) AS AGO
+	, SUM(IF ( MONTH(valor1) = 9 , valor3 , 0 )) AS SEP
+	, SUM(IF ( MONTH(valor1) = 10 , valor3 , 0 )) AS OCT
+	, SUM(IF ( MONTH(valor1) = 11 , valor3 , 0 )) AS NOV
+	, SUM(IF ( MONTH(valor1) = 12 , valor3 , 0 )) AS DIC
+
+
+FROM    Operacion o
+
+
+
+
+LEFT JOIN 	(      SELECT    o.idOperacion,(            IF(                c0.idConcepto = 143 , 		(                      IF (                        co0.valorTexto IS NOT NULL ,                        co0.valorTexto,                        IF (                            co0.valorNumerico IS NOT NULL ,                            co0.valorNumerico,                            IF (                                co0.valorFecha IS NOT NULL ,                                co0.valorFecha,NULL                            )                        )                    ) 		), 		NULL               )  	            ) AS valor0         FROM Operacion o        INNER JOIN pertenenciadevalores pv0 on (o.idOperacion=pv0.idOperacion)          INNER JOIN concepto c0 on c0.idConcepto = pv0.idConcepto   AND  (c0.idConcepto=143 )          INNER JOIN conceptooperacion co0 on co0.idConceptoOperacion = pv0.idConceptoOperacion      ) AS valor0   ON o.idOperacion  =  valor0.idOperacion
+
+
+
+
+LEFT JOIN 	(      SELECT    o.idOperacion,(            IF(                c1.idConcepto = 2 , 		(                      IF (                        co1.valorTexto IS NOT NULL ,                        co1.valorTexto,                        IF (                            co1.valorNumerico IS NOT NULL ,                            co1.valorNumerico,                            IF (                                co1.valorFecha IS NOT NULL ,                                co1.valorFecha,NULL                            )                        )                    ) 		), 		NULL               )  	            ) AS valor1         FROM Operacion o        INNER JOIN pertenenciadevalores pv1 on (o.idOperacion=pv1.idOperacion)          INNER JOIN concepto c1 on c1.idConcepto = pv1.idConcepto   AND  (c1.idConcepto=2 )          INNER JOIN conceptooperacion co1 on co1.idConceptoOperacion = pv1.idConceptoOperacion      ) AS valor1   ON o.idOperacion  =  valor1.idOperacion
+
+
+
+
+LEFT JOIN 	(      SELECT    o.idOperacion,(            IF(                c2.idConcepto = 4 , 		(                      IF (                        co2.valorTexto IS NOT NULL ,                        co2.valorTexto,                        IF (                            co2.valorNumerico IS NOT NULL ,                            co2.valorNumerico,                            IF (                                co2.valorFecha IS NOT NULL ,                                co2.valorFecha,NULL                            )                        )                    ) 		), 		NULL               )  	            ) AS valor2         FROM Operacion o        INNER JOIN pertenenciadevalores pv2 on (o.idOperacion=pv2.idOperacion)          INNER JOIN concepto c2 on c2.idConcepto = pv2.idConcepto   AND  (c2.idConcepto=4 )          INNER JOIN conceptooperacion co2 on co2.idConceptoOperacion = pv2.idConceptoOperacion      ) AS valor2   ON o.idOperacion  =  valor2.idOperacion
+
+
+
+
+LEFT JOIN 	(      SELECT    o.idOperacion,(            IF(                c3.idConcepto = 10 , 		(                      IF (                        co3.valorTexto IS NOT NULL ,                        co3.valorTexto,                        IF (                            co3.valorNumerico IS NOT NULL ,                            co3.valorNumerico,                            IF (                                co3.valorFecha IS NOT NULL ,                                co3.valorFecha,NULL                            )                        )                    ) 		), 		NULL               )  	            ) AS valor3         FROM Operacion o        INNER JOIN pertenenciadevalores pv3 on (o.idOperacion=pv3.idOperacion)          INNER JOIN concepto c3 on c3.idConcepto = pv3.idConcepto   AND  (c3.idConcepto=10 )          INNER JOIN conceptooperacion co3 on co3.idConceptoOperacion = pv3.idConceptoOperacion      ) AS valor3   ON o.idOperacion  =  valor3.idOperacion
+
+
+
+
+
+
+
+
+
+LEFT JOIN 	(
+SELECT
+o.idOperacion,
+ cat.valor as CentroDeCosto
+FROM Operacion o
+INNER JOIN pertenenciadevalores pv4 on (o.idOperacion=pv4.idOperacion)
+INNER JOIN concepto c4 on c4.idConcepto = pv4.idConcepto   AND  (c4.idConcepto=139 )
+INNER JOIN conceptooperacion co4 on co4.idConceptoOperacion = pv4.idConceptoOperacion
+ INNER JOIN catalogo cat on (   co4.valorTexto = cat.idCatalogo )
+   ) AS valor4   ON o.idOperacion  =  valor4.idOperacion
+
+
+
+
+LEFT JOIN 	(
+SELECT
+o.idOperacion,
+ valorFecha as fechaDeEntrega
+FROM Operacion o
+INNER JOIN pertenenciadevalores pv5 on (o.idOperacion=pv5.idOperacion)
+INNER JOIN concepto c5 on c5.idConcepto = pv5.idConcepto   AND  (c5.idConcepto=3 )
+INNER JOIN conceptooperacion co5 on co5.idConceptoOperacion = pv5.idConceptoOperacion
+
+   ) AS valor5   ON o.idOperacion  =  valor5.idOperacion
+
+
+LEFT JOIN 	(
+SELECT
+o.idOperacion,
+CONCAT(p.nombre,' ',p.apellidoPaterno,' ',p.apellidoMaterno) as responsable
+FROM Operacion o
+INNER JOIN pertenenciadevalores pv6 on (o.idOperacion=pv6.idOperacion)
+INNER JOIN concepto c6 on c6.idConcepto = pv6.idConcepto   AND  (c6.idConcepto=5 )
+INNER JOIN conceptooperacion co6 on co6.idConceptoOperacion = pv6.idConceptoOperacion
+INNER JOIN persona p  on co6.valorTexto = p.idPersona
+
+   ) AS valor6   ON o.idOperacion  =  valor6.idOperacion
+
+
+
+
+
+
+LEFT JOIN 	(               SELECT o.idOperacion,   eo.estado as EstadoNombre    FROM Operacion o        INNER JOIN  estadooperacion eo on o.idEstadoOperacion = eo.idEstadoOperacion     ) AS estado  ON o.idOperacion  =  estado.idOperacion
+
+
+
+
+
+WHERE
+YEAR(valor1) = $P{anio}
+AND SUBSTRING(valor4.CentroDeCosto, 1, 4)   >=   SUBSTRING($P{centroDeCostoInicial}, 1, 4)
+AND SUBSTRING(valor4.CentroDeCosto, 1, 4)   <=   SUBSTRING($P{centroDeCostoFinal}, 1, 4)
+AND estado.EstadoNombre = $P{estado}
+
+
+GROUP BY valor4.CentroDeCosto
+ORDER BY valor4.CentroDeCosto]]>
+	</queryString>
+	<field name="idOperacion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idEstadoOperacion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaCreacion" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaModificacion" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idusuarios" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor0" class="java.lang.String"/>
+	<field name="valor1" class="java.lang.String"/>
+	<field name="valor2" class="java.lang.String"/>
+	<field name="valor3" class="java.lang.Double"/>
+	<field name="CentroDeCosto" class="java.lang.String"/>
+	<field name="fechaDeEntrega" class="java.sql.Timestamp"/>
+	<field name="responsable" class="java.lang.String"/>
+	<field name="EstadoNombre" class="java.lang.String"/>
+	<field name="MES" class="java.lang.Integer"/>
+	<field name="ENE" class="java.lang.Double"/>
+	<field name="FEB" class="java.lang.Double"/>
+	<field name="MAR" class="java.lang.Double"/>
+	<field name="ABR" class="java.lang.Double"/>
+	<field name="MAY" class="java.lang.Double"/>
+	<field name="JUN" class="java.lang.Double"/>
+	<field name="JUL" class="java.lang.Double"/>
+	<field name="AGO" class="java.lang.Double"/>
+	<field name="SEP" class="java.lang.Double"/>
+	<field name="OCT" class="java.lang.Double"/>
+	<field name="NOV" class="java.lang.Double"/>
+	<field name="DIC" class="java.lang.Double"/>
+	<variable name="valor3_1" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{valor3}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="102">
+			<image>
+				<reportElement x="0" y="0" width="152" height="58" uuid="e5f62c2d-22ed-4729-8456-1579e580ef36"/>
+				<imageExpression><![CDATA[$P{IMAGEREPORTDIR}+"logoSoxtec.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="325" y="0" width="100" height="20" uuid="16aa558f-f6f0-4722-9d30-cb0a09225049"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Soxtec S.A. de C.V.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="20" width="215" height="20" uuid="0c779ab0-d680-4dff-8cb6-c44682ce749c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE ANALISIS DE COMPRAS]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="100" width="752" height="1" uuid="84550ea2-1201-4a8b-8d6e-302fffe3bf64"/>
+			</line>
+			<textField>
+				<reportElement x="276" y="60" width="215" height="20" uuid="cc3a8d5f-c79f-44e2-99f2-6906932f9037"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{EstadoNombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="588" y="77" width="80" height="20" uuid="7b3b702e-3077-4691-883c-ca19ac3805c3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="668" y="77" width="40" height="20" uuid="99f18962-46d9-4b07-9c17-e2f11f4163f8"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20">
+			<staticText>
+				<reportElement x="20" y="0" width="132" height="20" uuid="b3655788-2338-4efc-b039-2316c89f6316"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[C. DE COSTO]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="19" width="752" height="1" uuid="3186efe9-3099-46f8-931d-e96f8e04e436"/>
+			</line>
+			<staticText>
+				<reportElement x="636" y="0" width="113" height="20" uuid="fe282a05-24b4-408a-8265-7e9c50172d5f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="0" width="40" height="20" uuid="d10165cd-1d7e-4e1c-a69c-51f77a5d578c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[ENE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="196" y="0" width="40" height="20" uuid="9cb7a9f6-8576-42d3-a996-9afae64c1181"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[FEB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="236" y="0" width="40" height="20" uuid="b32fce82-cfe9-41bf-941f-5afde8a18559"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[MAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="316" y="0" width="40" height="20" uuid="ced21624-209f-4e88-89c4-62c02c22014a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[MAY]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="356" y="0" width="40" height="20" uuid="5ef4049d-907d-4cf4-85d6-fee14b24727b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[JUN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="0" width="40" height="20" uuid="2eff55d1-0231-427a-9316-1d6400654448"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[ABR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="396" y="0" width="40" height="20" uuid="e7d033e2-50c6-4998-911b-f0d06e369407"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[JUL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="516" y="0" width="40" height="20" uuid="70f73b0d-f90a-4886-9fc8-973e67af0f85"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[OCT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="436" y="0" width="40" height="20" uuid="fca10333-316f-4417-9edf-5942fccd4227"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[AGO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="476" y="0" width="40" height="20" uuid="56e0557b-1f0b-4017-a85f-b27c5147f4ef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[SEP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="596" y="0" width="40" height="20" uuid="be9be2ee-00a6-451f-a128-0ff475eed00e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[DIC]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="556" y="0" width="40" height="20" uuid="e2fa8a4e-a896-4116-b439-f5694dfd17de"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NOV]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="10" splitType="Stretch">
+			<textField>
+				<reportElement x="20" y="0" width="132" height="10" uuid="6e432b8b-4f17-4d47-877a-4c23f72aa3bd"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CentroDeCosto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="637" y="0" width="113" height="10" uuid="51d7b45c-1024-42bb-a418-9e8da9703fdd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{valor3}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="156" y="0" width="40" height="10" uuid="99ce16ae-ba79-4a37-befb-927beb778985"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{ENE}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="196" y="0" width="40" height="10" uuid="2cd6adbd-4f97-436c-930c-bd23f1e3cd75"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{FEB}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="236" y="0" width="40" height="10" uuid="b4a8e027-485f-470e-841c-0affe3d5b16c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{MAR}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="276" y="0" width="40" height="10" uuid="78c41d95-ed3e-4019-b59b-76fa0d55be6c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{ABR}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="0" width="40" height="10" uuid="68f3db84-d5b9-4608-878e-5a6a2e513b48"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{MAY}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="356" y="0" width="40" height="10" uuid="af6743e2-9ab7-45fc-a8d4-b30a6b2eb5a3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{JUN}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="396" y="0" width="40" height="10" uuid="8957fd66-245c-4ee9-830d-6866d9ad5ad9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{JUL}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="436" y="0" width="40" height="10" uuid="5eeb5b6c-90dd-4a02-8943-85ce8bd12446"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{AGO}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="0" width="40" height="10" uuid="afb5899c-4c5b-49ab-8eeb-544f0987d8ef"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{SEP}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="516" y="0" width="40" height="10" uuid="52f5ac2e-6b7d-4446-bd7e-2dd786c02282"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{OCT}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="556" y="0" width="40" height="10" uuid="61028686-ad0b-4f9d-b000-8e298253eb10"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{NOV}))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="596" y="0" width="40" height="10" uuid="1712d28f-641d-41b6-b15d-3152d62702b9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{DIC}))]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="24">
+			<staticText>
+				<reportElement x="492" y="0" width="145" height="20" uuid="1aa78dd1-3dfc-4198-8844-4de286496714"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="637" y="0" width="113" height="20" uuid="97042643-4cf3-48d6-9ef7-e325c1bfe62f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($V{valor3_1}))]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="443" y="20" width="307" height="1" uuid="6548bad5-bd2a-49e5-bfff-67f7801c2767"/>
+			</line>
+			<line>
+				<reportElement x="443" y="23" width="307" height="1" uuid="976f281c-8b8a-439a-b54f-6c79208ae19e"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

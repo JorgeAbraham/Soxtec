@@ -114,6 +114,11 @@ public class factura_ifz extends javax.swing.JFrame {
     utilidadesbasicas.utilidadValidacionNulo validacionNulosReporte;
         
     
+    int diaSemana[]={  Calendar.SUNDAY, Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY , Calendar.SATURDAY }; 
+    
+    
+    
+    
     public factura_ifz() {
         
         
@@ -226,7 +231,7 @@ public class factura_ifz extends javax.swing.JFrame {
             }
         });
         
-        
+        periodStart.setSelectedIndex(5);
         
     }
 
@@ -385,6 +390,13 @@ public class factura_ifz extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         scrollPane = new javax.swing.JScrollPane();
         PNL_horas = new javax.swing.JPanel();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel50 = new javax.swing.JLabel();
+        jLabel51 = new javax.swing.JLabel();
+        periodStart = new javax.swing.JComboBox<>();
+        jLabel52 = new javax.swing.JLabel();
+        periodEnd = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1439,6 +1451,55 @@ public class factura_ifz extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("WORK HOURS ", scrollPaneWorkHours);
 
+        jLabel50.setText("PERIODE TO INVOICE");
+
+        jLabel51.setText("Start Date");
+
+        periodStart.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY" }));
+
+        jLabel52.setText("End Date");
+
+        periodEnd.setEditable(false);
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel50)
+                    .addComponent(jLabel51)
+                    .addComponent(periodStart, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(jLabel52))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(periodEnd, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(86, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel50)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel51)
+                    .addComponent(jLabel52))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(periodStart, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(periodEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(450, Short.MAX_VALUE))
+        );
+
+        jScrollPane12.setViewportView(jPanel5);
+
+        jTabbedPane1.addTab("SETUP", jScrollPane12);
+
         jButton4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jButton4.setText("New");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -1545,10 +1606,14 @@ public class factura_ifz extends javax.swing.JFrame {
 
         calendar = Calendar.getInstance();
 
-        semanasTrabajadas = diferenciaSemanas(fechaInicial, fechaFinal) + 1;
+       
+        
+        JOptionPane.showMessageDialog(null, semanasTrabajadas);
+        
+        
 
         int diasTranscurridos = numeroDiasEntreDosFechas(fechaInicial,fechaFinal);
-        
+        semanasTrabajadas = diferenciaSemanas(fechaInicial,diasTranscurridos) ;
        
         
         if (diasTranscurridos >= 0) {  //Si hay numero de dias disponibles
@@ -1625,7 +1690,53 @@ public class factura_ifz extends javax.swing.JFrame {
         return (int)diffDays;
     }
     
-    public int diferenciaSemanas(Date fechaInicial, Date fechaFinal) {
+    
+    
+    
+    public int diferenciaSemanas(  Date fechaInicial, int dias   )    {
+       
+   
+        int conteoSemanas=0;
+        
+        int diaInicioDelPeriodo=diaSemana[periodStart.getSelectedIndex()];
+
+        
+    
+        
+        JOptionPane.showMessageDialog(null, "Dias:  "+dias);
+        
+        
+        Calendar c = Calendar.getInstance();
+       
+ 
+        
+        for(int i=0;i<dias+1;i++){
+            
+            c.setTime(fechaInicial);
+            
+            int dia =  c.get(Calendar.DAY_OF_WEEK);
+            System.out.println(fechaInicial+":    "+diaInicioDelPeriodo +"  <-> "+ dia   +"  && "  +  i  +" <-> "+0 );
+            if( diaInicioDelPeriodo == dia  && i!=0 ){
+                conteoSemanas=conteoSemanas+1;
+            }
+        
+            fechaInicial = utilidadesFecha.sumaFecha.sumarDiasAFecha(fechaInicial, 1);
+            
+        }
+        
+        
+        System.out.println(  "   " );
+        System.out.println(  "   " );
+        
+        
+        System.out.println(  conteoSemanas   );
+        return conteoSemanas;
+        
+	
+    }
+    
+    
+    public int diferenciaSemanasSegunSemanaInglesa(Date fechaInicial, Date fechaFinal) {
         int diferenciaSemana;
 
         calendar.setTime(fechaInicial); // Configuramos la fecha que se recibe
@@ -1686,7 +1797,7 @@ public class factura_ifz extends javax.swing.JFrame {
                 String DiaMes = formatoDiaMes.format(calendar.getTime());
                 String DiaSemana = formatoDiaSemana.format(calendar.getTime());
                 String DiaCompleto = formatoSQL.format(calendar.getTime());
-                semanaTrabajadaMatutino[j] = diferenciaSemanas(fechaInicial, calendar.getTime()) + 1;  //Se saca la semana y se agrega  los dias
+                // semanaTrabajadaMatutino[j] = diferenciaSemanas(fechaInicial, calendar.getTime()) + 1;  //Se saca la semana y se agrega  los dias
 
                 String nombreDia = "";//LMMiJVSD
                 if (DiaSemana.equals("1")) {
@@ -2133,7 +2244,7 @@ public class factura_ifz extends javax.swing.JFrame {
                 String DiaMes = formatoDiaMes.format(calendar.getTime());
                 String DiaSemana = formatoDiaSemana.format(calendar.getTime());
                 String DiaCompleto = formatoSQL.format(calendar.getTime());
-                semanaTrabajadaVespertino[j] = diferenciaSemanas(fechaInicial, calendar.getTime()) + 1;  //Se saca la semana y se agrega  los dias
+                // semanaTrabajadaVespertino[j] = diferenciaSemanas(fechaInicial, calendar.getTime()) + 1;  //Se saca la semana y se agrega  los dias
 
                 String nombreDia = "";//LMMiJVSD
                 if (DiaSemana.equals("1")) {
@@ -2697,7 +2808,7 @@ public class factura_ifz extends javax.swing.JFrame {
             Date fechaFinal = DTE_fechaFinPeriodo.getDate();
             calendar = Calendar.getInstance();
 
-            semanasTrabajadas = diferenciaSemanas(fechaInicial, fechaFinal) + 1;
+            //semanasTrabajadas = diferenciaSemanas(fechaInicial, fechaFinal) + 1;
 
             int diasTranscurridos = (int) ((fechaFinal.getTime() - fechaInicial.getTime()) / 86400000);
 
@@ -3151,7 +3262,7 @@ public class factura_ifz extends javax.swing.JFrame {
                 String DiaMes = formatoDiaMes.format(calendar.getTime());
                 String DiaSemana = formatoDiaSemana.format(calendar.getTime());
                 String DiaCompleto = formatoSQL.format(calendar.getTime());
-                semanaTrabajadaMatutino[j] = diferenciaSemanas(fechaInicial, calendar.getTime()) + 1;  //Se saca la semana y se agrega  los dias
+                //semanaTrabajadaMatutino[j] = diferenciaSemanas(fechaInicial, calendar.getTime()) + 1;  //Se saca la semana y se agrega  los dias
 
                 String nombreDia = "";//LMMiJVSD
                 if (DiaSemana.equals("1")) {
@@ -3358,7 +3469,7 @@ public class factura_ifz extends javax.swing.JFrame {
                 String DiaMes = formatoDiaMes.format(calendar.getTime());
                 String DiaSemana = formatoDiaSemana.format(calendar.getTime());
                 String DiaCompleto = formatoSQL.format(calendar.getTime());
-                semanaTrabajadaVespertino[j] = diferenciaSemanas(fechaInicial, calendar.getTime()) + 1;  //Se saca la semana y se agrega  los dias
+                //semanaTrabajadaVespertino[j] = diferenciaSemanas(fechaInicial, calendar.getTime()) + 1;  //Se saca la semana y se agrega  los dias
 
                 String nombreDia = "";//LMMiJVSD
                 if (DiaSemana.equals("1")) {
@@ -3629,6 +3740,9 @@ public class factura_ifz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel50;
+    private javax.swing.JLabel jLabel51;
+    private javax.swing.JLabel jLabel52;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -3637,9 +3751,11 @@ public class factura_ifz extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -3649,6 +3765,8 @@ public class factura_ifz extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTextField periodEnd;
+    private javax.swing.JComboBox<String> periodStart;
     private javax.swing.JTextField promedioRechazado;
     private javax.swing.JTextField promedioRechazadoMAX;
     private javax.swing.JTextField promedioRechazadoMIN;

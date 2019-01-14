@@ -6,6 +6,7 @@
 package Controlador.Acceso;
 
 import interfaces.menu_ifz;
+import javax.swing.JFrame;
 
 /**
  *
@@ -19,7 +20,7 @@ public class Acceso {
          
         menu_ifz I=new  menu_ifz();
         I.setVisible(true);
-        
+        I.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
     
     

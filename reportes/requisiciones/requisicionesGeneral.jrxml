@@ -120,11 +120,11 @@ WHERE o.idOperacion=$P{idOperacion}]]>
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="valor0" class="java.lang.String"/>
-	<field name="valor1" class="java.lang.String"/>
+	<field name="valor1" class="java.util.Date"/>
 	<field name="valor2" class="java.lang.String"/>
 	<field name="valor3" class="java.lang.String"/>
 	<field name="CentroDeCosto" class="java.lang.String"/>
-	<field name="fechaDeEntrega" class="java.sql.Timestamp"/>
+	<field name="fechaDeEntrega" class="java.util.Date"/>
 	<field name="responsable" class="java.lang.String"/>
 	<field name="EstadoNombre" class="java.lang.String"/>
 	<detail>
@@ -195,7 +195,7 @@ WHERE o.idOperacion=$P{idOperacion}]]>
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{valor1}.substring(0,10)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("MM/dd/yyyy").format($F{valor1})]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="66" y="177" width="199" height="60" uuid="0d89ddf4-87d0-4ef7-9e85-2f381e118b1e"/>
@@ -340,7 +340,7 @@ WHERE o.idOperacion=$P{idOperacion}]]>
 					<rightPen lineWidth="0.25"/>
 				</box>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{fechaDeEntrega}.substring(0,10)]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("MM/dd/yyyy").format($F{fechaDeEntrega})]]></textFieldExpression>
 			</textField>
 			<subreport>
 				<reportElement x="0" y="237" width="572" height="298" uuid="54998d78-7b91-48f0-9d80-8b533eae3e45"/>

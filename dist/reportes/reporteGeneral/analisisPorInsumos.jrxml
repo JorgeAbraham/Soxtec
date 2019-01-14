@@ -12,7 +12,14 @@
 	<parameter name="fechaFinal" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
-	<parameter name="centroDeCosto" class="java.lang.String">
+	<parameter name="IMAGEREPORTDIR" class="java.lang.String"/>
+	<parameter name="centroDeCostoInicial" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="centroDeCostoFinal" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="estado" class="java.lang.String">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
 	<queryString>
@@ -105,7 +112,17 @@ INNER JOIN persona p  on co6.valorTexto = p.idPersona
 
 
 LEFT JOIN 	(               SELECT o.idOperacion,   eo.estado as EstadoNombre    FROM Operacion o        INNER JOIN  estadooperacion eo on o.idEstadoOperacion = eo.idEstadoOperacion     ) AS estado  ON o.idOperacion  =  estado.idOperacion
-]]>
+
+
+
+
+
+WHERE
+valor1 >= $P{fechaInicial}
+AND  valor1 <= $P{fechaFinal}
+AND SUBSTRING(valor4.CentroDeCosto, 1, 4)   >=   SUBSTRING($P{centroDeCostoInicial}, 1, 4)
+AND SUBSTRING(valor4.CentroDeCosto, 1, 4)   <=   SUBSTRING($P{centroDeCostoFinal}, 1, 4)
+AND estado.EstadoNombre = $P{estado}]]>
 	</queryString>
 	<field name="idOperacion" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -134,10 +151,10 @@ LEFT JOIN 	(               SELECT o.idOperacion,   eo.estado as EstadoNombre    
 		<variableExpression><![CDATA[$F{valor3}]]></variableExpression>
 	</variable>
 	<title>
-		<band height="71">
+		<band height="102">
 			<image>
 				<reportElement x="0" y="0" width="152" height="58" uuid="e5f62c2d-22ed-4729-8456-1579e580ef36"/>
-				<imageExpression><![CDATA["C:\\Program Soxtec\\ProgramasJava\\Soxtec\\src\\imagenes\\logoSoxtec.jpg"]]></imageExpression>
+				<imageExpression><![CDATA[$P{IMAGEREPORTDIR}+"logoSoxtec.jpg"]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="325" y="0" width="100" height="20" uuid="16aa558f-f6f0-4722-9d30-cb0a09225049"/>
@@ -154,8 +171,26 @@ LEFT JOIN 	(               SELECT o.idOperacion,   eo.estado as EstadoNombre    
 				<text><![CDATA[REPORTE DE ANALISIS DE COMPRAS]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="70" width="752" height="1" uuid="84550ea2-1201-4a8b-8d6e-302fffe3bf64"/>
+				<reportElement x="0" y="100" width="752" height="1" uuid="84550ea2-1201-4a8b-8d6e-302fffe3bf64"/>
 			</line>
+			<textField>
+				<reportElement x="220" y="40" width="325" height="20" uuid="c4717b84-0f67-4fcf-8bda-6d30da5dd043"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaInicial}.substring(0,10)+"   <->   "+$P{fechaFinal}.substring(0,10)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="343" y="60" width="100" height="20" uuid="cc3a8d5f-c79f-44e2-99f2-6906932f9037"/>
+				<textFieldExpression><![CDATA[$F{EstadoNombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="588" y="77" width="80" height="20" uuid="7b3b702e-3077-4691-883c-ca19ac3805c3"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="668" y="77" width="40" height="20" uuid="99f18962-46d9-4b07-9c17-e2f11f4163f8"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<columnHeader>
@@ -339,8 +374,7 @@ LEFT JOIN 	(               SELECT o.idOperacion,   eo.estado as EstadoNombre    
 				<textElement>
 					<font isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[
-"\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($V{valor3_1}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($V{valor3_1}))]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="443" y="20" width="307" height="1" uuid="6548bad5-bd2a-49e5-bfff-67f7801c2767"/>
