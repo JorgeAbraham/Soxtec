@@ -122,7 +122,7 @@ valor1 >= $P{fechaInicial}
 AND  valor1 <= $P{fechaFinal}
 AND SUBSTRING(valor4.CentroDeCosto, 1, 4)   >=   SUBSTRING($P{centroDeCostoInicial}, 1, 4)
 AND SUBSTRING(valor4.CentroDeCosto, 1, 4)   <=   SUBSTRING($P{centroDeCostoFinal}, 1, 4)
-AND estado.EstadoNombre = $P{estado}]]>
+AND estado.EstadoNombre REGEXP $P{estado}   ]]>
 	</queryString>
 	<field name="idOperacion" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -142,7 +142,7 @@ AND estado.EstadoNombre = $P{estado}]]>
 	<field name="valor0" class="java.lang.String"/>
 	<field name="valor1" class="java.lang.String"/>
 	<field name="valor2" class="java.lang.String"/>
-	<field name="valor3" class="java.lang.Float"/>
+	<field name="valor3" class="java.lang.Double"/>
 	<field name="CentroDeCosto" class="java.lang.String"/>
 	<field name="fechaDeEntrega" class="java.sql.Timestamp"/>
 	<field name="responsable" class="java.lang.String"/>

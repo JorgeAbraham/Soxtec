@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="requisicionesGeneral" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="016c3770-7880-4562-a8b3-6bdee4606bc7">
+	<property name="ireport.zoom" value="0.75"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Program Soxtec\\ProgramasJava\\Soxtec\\reportes\\reporteGeneral\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaInicial" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaFinal" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMAGEREPORTDIR" class="java.lang.String"/>
+	<parameter name="centroDeCostoInicial" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="centroDeCostoFinal" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="estado" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT
+	o.idOperacion
+	,o.idEstadoOperacion
+	,o.fechaCreacion
+	,o.fechaModificacion
+	,o.idusuarios
+	,valor4 AS FECHA
+	,valor3 AS CENTRODECOSTO
+	,SUM(if (valor4 >= '2019-01-01' AND valor4 <= '2019-01-06',valor5 ,0))   AS SEMANA1
+	,SUM(if (valor4 >= '2019-01-07' AND valor4 <= '2019-01-13',valor5 ,0))  AS SEMANA2
+	,SUM(if (valor4 >= '2019-01-14' AND valor4 <= '2019-01-20',valor5 ,0))  AS SEMANA3
+	,SUM(if (valor4 >= '2019-01-01' AND valor4 <= '2019-01-20',valor5 ,0))  AS TOTAL
+FROM    Operacion o
+
+
+LEFT JOIN 	(
+		SELECT
+
+			o.idOperacion,
+			( cat.valor ) AS valor3,
+			pv3.fila
+		FROM Operacion o
+		INNER JOIN pertenenciadevalores pv3 on (o.idOperacion=pv3.idOperacion)
+		INNER JOIN concepto c3 on c3.idConcepto = pv3.idConcepto   AND  (c3.idConcepto=139 )
+		INNER JOIN conceptooperacion co3 on co3.idConceptoOperacion = pv3.idConceptoOperacion
+		INNER JOIN catalogo cat on (cat.idCatalogo = co3.valorTexto)
+	) AS valor3
+		ON o.idOperacion  =  valor3.idOperacion
+
+
+
+
+
+LEFT JOIN 	(
+		SELECT
+			o.idOperacion,
+			( co4.valorFecha ) AS valor4,
+			pv4.fila
+		FROM Operacion o
+		INNER JOIN pertenenciadevalores pv4 on (o.idOperacion=pv4.idOperacion)
+		INNER JOIN concepto c4 on c4.idConcepto = pv4.idConcepto   AND  (c4.idConcepto=2 )
+		INNER JOIN conceptooperacion co4 on co4.idConceptoOperacion = pv4.idConceptoOperacion
+
+		) AS valor4
+		ON o.idOperacion  =  valor4.idOperacion
+
+
+
+
+LEFT JOIN 	(
+		SELECT
+			o.idOperacion,
+			( co5.valorNumerico ) AS valor5,
+			pv5.fila
+		FROM Operacion o
+		INNER JOIN pertenenciadevalores pv5 on (o.idOperacion=pv5.idOperacion)
+		INNER JOIN concepto c5 on c5.idConcepto = pv5.idConcepto   AND  (c5.idConcepto=10 )
+		INNER JOIN conceptooperacion co5 on co5.idConceptoOperacion = pv5.idConceptoOperacion
+
+		) AS valor5
+		ON o.idOperacion  =  valor5.idOperacion
+
+
+
+where
+idEstadoOperacion=3
+
+
+
+ AND valor4 >= '2019-01-01' AND valor4 <= '2019-01-20'
+
+ GROUP BY CENTRODECOSTO
+ ORDER BY TOTAL DESC
+LIMIT 3, 18446744073709551615]]>
+	</queryString>
+	<field name="idOperacion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idEstadoOperacion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaCreacion" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="fechaModificacion" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="idusuarios" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FECHA" class="java.sql.Timestamp"/>
+	<field name="CENTRODECOSTO" class="java.lang.String"/>
+	<field name="SEMANA1" class="java.lang.Double"/>
+	<field name="SEMANA2" class="java.lang.Double"/>
+	<field name="SEMANA3" class="java.lang.Double"/>
+	<field name="TOTAL" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="SEMANA1_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{SEMANA1}]]></variableExpression>
+	</variable>
+	<variable name="SEMANA2_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{SEMANA2}]]></variableExpression>
+	</variable>
+	<variable name="SEMANA3_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{SEMANA3}]]></variableExpression>
+	</variable>
+	<variable name="TOTAL_1" class="java.lang.Double" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{TOTAL}]]></variableExpression>
+	</variable>
+	<title>
+		<band height="115">
+			<image>
+				<reportElement x="0" y="0" width="152" height="58" uuid="e5f62c2d-22ed-4729-8456-1579e580ef36"/>
+				<imageExpression><![CDATA[$P{IMAGEREPORTDIR}+"logoSoxtec.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="325" y="0" width="100" height="20" uuid="16aa558f-f6f0-4722-9d30-cb0a09225049"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Soxtec S.A. de C.V.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="276" y="20" width="215" height="20" uuid="0c779ab0-d680-4dff-8cb6-c44682ce749c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE ANALISIS DE COMPRAS]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="100" width="752" height="1" uuid="84550ea2-1201-4a8b-8d6e-302fffe3bf64"/>
+			</line>
+			<textField>
+				<reportElement x="220" y="40" width="325" height="20" uuid="c4717b84-0f67-4fcf-8bda-6d30da5dd043"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{fechaInicial}.substring(0,10)+"   <->   "+$P{fechaFinal}.substring(0,10)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="588" y="77" width="80" height="20" uuid="7b3b702e-3077-4691-883c-ca19ac3805c3"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="668" y="77" width="40" height="20" uuid="99f18962-46d9-4b07-9c17-e2f11f4163f8"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="21">
+			<staticText>
+				<reportElement x="0" y="1" width="349" height="20" uuid="9829a289-fddd-4e6a-b374-e0d6378a42b3"/>
+				<text><![CDATA[CENTRO DE COSTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="349" y="0" width="100" height="20" uuid="1021ad9a-a724-4ef3-88f1-37affa9f1532"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[SEMANA 1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="449" y="0" width="100" height="20" uuid="65adc9c6-0ce1-45ca-abec-b4df381590bd"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[SEMANA 2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="549" y="1" width="100" height="20" uuid="cf9eeea8-9550-451f-b89f-789859848ac1"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[SEMANA 3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="649" y="1" width="100" height="20" uuid="2a0a3f64-af93-48c7-add3-d75ce7412c79"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20">
+			<textField>
+				<reportElement x="0" y="0" width="349" height="20" uuid="f5516d20-23cb-479a-b14a-1abf5f63bbcd"/>
+				<textFieldExpression><![CDATA[$F{CENTRODECOSTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="349" y="0" width="100" height="20" uuid="8cbb5048-7150-442c-a5f8-c19e8624d203"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{SEMANA1}))
+]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="0" width="100" height="20" uuid="ae39728a-1af0-4b4e-b6f9-406b16d6d548"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{SEMANA2}))
+]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="549" y="0" width="100" height="20" uuid="3ca186a1-b14f-46f5-8dfb-67e4529ee3d5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{SEMANA3}))
+]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="649" y="0" width="100" height="20" uuid="41c46016-e74e-4eba-a203-cbda46dc33e1"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($F{TOTAL}))
+
+]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="20">
+			<textField>
+				<reportElement x="349" y="0" width="100" height="20" uuid="830ea9ae-44f6-44d7-80cb-36f44f2b1d27"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($V{SEMANA1_1}))
+]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="449" y="0" width="100" height="20" uuid="c4af1eb9-8a46-43ca-8feb-70b4a46f2b16"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($V{SEMANA2_1}))
+]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="549" y="0" width="100" height="20" uuid="f2351a35-c86c-47bf-9e43-39a8013aad5a"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($V{SEMANA3_1}))
+
+]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="649" y="0" width="100" height="20" uuid="e0de8149-8f68-4af3-8b57-b97166587c55"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["\$ "+new java.text.DecimalFormat("#,##0.00").format(Double.valueOf($V{TOTAL_1}))
+
+]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<summary>
+		<band height="467">
+			<bar3DChart>
+				<chart>
+					<reportElement x="0" y="14" width="752" height="440" uuid="77e465a8-f252-471b-a261-9189fd37a28b"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Semana 1"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{CENTRODECOSTO}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{SEMANA1}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Semana 2"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{CENTRODECOSTO}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{SEMANA2}]]></valueExpression>
+					</categorySeries>
+					<categorySeries>
+						<seriesExpression><![CDATA["Semana 3"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{CENTRODECOSTO}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{SEMANA3}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot labelRotation="90.0"/>
+					<itemLabel/>
+					<categoryAxisFormat labelRotation="90.0">
+						<axisFormat>
+							<tickLabelFont>
+								<font size="5"/>
+							</tickLabelFont>
+						</axisFormat>
+					</categoryAxisFormat>
+					<valueAxisFormat>
+						<axisFormat/>
+					</valueAxisFormat>
+				</bar3DPlot>
+			</bar3DChart>
+		</band>
+	</summary>
+</jasperReport>
