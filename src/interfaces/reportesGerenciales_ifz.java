@@ -128,6 +128,7 @@ public class reportesGerenciales_ifz extends javax.swing.JFrame {
         pendientesLugarTBL = new javax.swing.JTable();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         CALinicial = new com.toedter.calendar.JCalendar();
         CALfinal = new com.toedter.calendar.JCalendar();
@@ -201,6 +202,13 @@ public class reportesGerenciales_ifz extends javax.swing.JFrame {
             }
         });
 
+        jButton7.setText("Ver Liquidados");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -219,7 +227,8 @@ public class reportesGerenciales_ifz extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
-                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -236,7 +245,9 @@ public class reportesGerenciales_ifz extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jButton5)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton6))
+                        .addComponent(jButton6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton7))
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(249, Short.MAX_VALUE))
         );
@@ -574,9 +585,6 @@ public class reportesGerenciales_ifz extends javax.swing.JFrame {
 
 
 
-            System.out.println( CAT[0][1]);
-            System.out.println( CAT[CAT.length-1][1] );
-            System.out.println( "Solicitud|En proceso" );
 
             reporte.addParametro("centroDeCostoInicial",  CAT[0][1]   );
             reporte.addParametro("centroDeCostoFinal",   CAT[CAT.length-1][1]  );
@@ -611,9 +619,7 @@ public class reportesGerenciales_ifz extends javax.swing.JFrame {
 
 
 
-            System.out.println( CAT[0][1]);
-            System.out.println( CAT[CAT.length-1][1] );
-            System.out.println( "Solicitud|En proceso" );
+        
 
             reporte.addParametro("centroDeCostoInicial",  CAT[0][1]   );
             reporte.addParametro("centroDeCostoFinal",   CAT[CAT.length-1][1]  );
@@ -648,9 +654,6 @@ public class reportesGerenciales_ifz extends javax.swing.JFrame {
 
 
 
-            System.out.println( CAT[0][1]);
-            System.out.println( CAT[CAT.length-1][1] );
-            System.out.println( "Solicitud|En proceso" );
 
             reporte.addParametro("centroDeCostoInicial",  CAT[0][1]   );
             reporte.addParametro("centroDeCostoFinal",   CAT[CAT.length-1][1]  );
@@ -670,6 +673,38 @@ public class reportesGerenciales_ifz extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        if (pendientesLugarTBL.getSelectedRow()!=-1){
+            String idCatalogoLugar=(String)pendientesLugarTBL.getValueAt(pendientesLugarTBL.getSelectedRow(), 0);
+
+            catalogo_servicio catalogo=new catalogo_servicio();
+            String CAT[][]=catalogo.listaPorTipoCatalogoYRelacion(idCatalogoLugar,3);
+
+
+            Calendar cal= Calendar.getInstance();
+            int year= cal.get(Calendar.YEAR);
+
+            Reportes reporte=new Reportes();
+
+
+
+            reporte.addParametro("centroDeCostoInicial",  CAT[0][1]   );
+            reporte.addParametro("centroDeCostoFinal",   CAT[CAT.length-1][1]  );
+            reporte.addParametro("fechaInicial",  year+"-01-01 00:00:00"  );
+            reporte.addParametro("fechaFinal",  year+"-12-31 00:00:00"    );
+            
+            
+            reporte.addParametro("anio",  year+""   );
+            reporte.addParametro("estado",  "Aplicado"  );
+        
+            archivoProperties A=new archivoProperties("reportParams.properties");
+            reporte.setImageReportDir(A.getProperties("IMAGEREPORTDIR"));
+            reporte.setSubreportDir(A.getProperties("SUBREPORTDIR")+"\\reporteGeneral\\");
+            reporte.verReporte("reportes\\reporteGeneral\\analisisPorInsumos.jasper", ManejadorDeDatos.BD.getCon());
+
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JCalendar CALfinal;
     private com.toedter.calendar.JCalendar CALinicial;
@@ -688,6 +723,7 @@ public class reportesGerenciales_ifz extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

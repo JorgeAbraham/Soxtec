@@ -21,6 +21,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.table.DefaultTableModel;
 import serviciosBD.ManejadorDeDatos;
 import serviciosBD.documentos_servicio;
@@ -383,6 +384,8 @@ public class requerimientos_ifz extends javax.swing.JFrame {
         empleadosTXT = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
         claveTXT = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        fechaCorteDTE = new com.toedter.calendar.JDateChooser();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         requiscisionTBL = new javax.swing.JTable();
@@ -539,6 +542,10 @@ public class requerimientos_ifz extends javax.swing.JFrame {
 
         claveTXT.setEditable(false);
         jPanel1.add(claveTXT, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 30, 120, -1));
+
+        jLabel3.setText("Fecha de Corte");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 260, -1, -1));
+        jPanel1.add(fechaCorteDTE, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 260, 250, -1));
 
         jScrollPane2.setViewportView(jPanel1);
 
@@ -757,6 +764,11 @@ public class requerimientos_ifz extends javax.swing.JFrame {
             valoracion=false;
             MSG=MSG+"Por favor llene Fecha de Entrega.\n";
         }
+        if (fechaCorteDTE.getDate()==null){
+            valoracion=false;
+            MSG=MSG+"Por favor llene Fecha de Corte.\n";
+        }
+        
         if (descripcionTXT.getText().equals("")){
             valoracion=false;
             MSG=MSG+"Por favor llene Descripción.\n";
@@ -791,16 +803,16 @@ public class requerimientos_ifz extends javax.swing.JFrame {
                 datosDeInterface.put("UsuarioP",instancias.session.idUsuario);
                 datosDeInterface.put("FechaP",utilidadesFecha.sumaFecha.date_aaaa_mm_dd(fechaRequisicionDTE.getDate()));
                 datosDeInterface.put("FechaEntrega",utilidadesFecha.sumaFecha.date_aaaa_mm_dd(fechaEntregaDTE.getDate()));
+               
                 datosDeInterface.put("DescRazon",descripcionTXT.getText());
                 datosDeInterface.put("PersonaReceptora",empleadosTXT.getText());
                 datosDeInterface.put("Total",totalTXT.getText());
                 datosDeInterface.put("Archivo",archivoNombreLBL.getText());
                 datosDeInterface.put("centroDeCostoRequisicion",centroDeCostosTXT.getText());
                 datosDeInterface.put("claveRequisicion",claveTXT.getText());
-               
+                datosDeInterface.put("fechaCorte",utilidadesFecha.sumaFecha.date_aaaa_mm_dd(fechaCorteDTE.getDate()));
                 
-
-
+                
                 HashMap<String, ArrayList> datosDeInterfaceListaInterna = new HashMap();
                 
                 
@@ -1003,7 +1015,7 @@ public class requerimientos_ifz extends javax.swing.JFrame {
             Reportes R=new Reportes();
             
             R.addParametro("idOperacion", requiscisionTBL.getValueAt(requiscisionTBL.getSelectedRow(), 0).toString());
-            
+            archivoAdjunto( requiscisionTBL.getValueAt(requiscisionTBL.getSelectedRow(), 0).toString() );
             archivoProperties A=new archivoProperties("reportParams.properties");
             R.setSubreportDir(A.getProperties("SUBREPORTDIR")+"\\requisiciones\\");
             R.setImageReportDir(A.getProperties("IMAGEREPORTDIR"));
@@ -1013,6 +1025,45 @@ public class requerimientos_ifz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_requiscisionTBLMouseClicked
 
+    
+     public void archivoAdjunto(String idOperacion ){
+        
+        operaciones_servicio OS=new operaciones_servicio();
+        String archivos[][]=OS.getArchivoDeOperacion(idOperacion,"11");
+         if( archivos != null ){
+                if( archivos.length>0 ){
+                    
+                    JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+                    jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                    // int returnValue = jfc.showOpenDialog(null);
+                    jfc.setDialogTitle("Existen Archivos Adjuntos. ¿Descargar?  ==>            "+archivos[0][1]);
+                    int returnValue = jfc.showSaveDialog(null);
+                    
+                    if (returnValue == JFileChooser.APPROVE_OPTION) {
+                        File selectedFile = jfc.getSelectedFile();
+                        
+                        
+                            String ruta = selectedFile.getAbsolutePath()+"/"+archivos[0][1];
+                            File archivo = new File(ruta);
+                            if(archivo.exists()) {
+
+                                if (JOptionPane.showConfirmDialog(null, "YA EXISTE UN ARCHIVO CON EL MISMO NOMBRE, ¿REEMPLAZARLO?", "REEMPLAZAR", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                                     ManejadorDeDatos.BD.ConsultaArchivo(" SELECT archivo FROM archivo WHERE idArchivo="+ archivos[0][0]  +";  ", "archivo",  selectedFile.getAbsolutePath()+"/"+archivos[0][1]   );
+                                } 
+
+                            } else {
+                                ManejadorDeDatos.BD.ConsultaArchivo(" SELECT archivo FROM archivo WHERE idArchivo="+ archivos[0][0]  +";  ", "archivo",  selectedFile.getAbsolutePath()+"/"+archivos[0][1]   );
+
+                            }
+
+         
+                        
+                    }
+            
+                }
+            }
+    }
+    
     private void aprobadasTBLMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_aprobadasTBLMouseClicked
         if (evt.getClickCount() == 2)
         {
@@ -1020,7 +1071,7 @@ public class requerimientos_ifz extends javax.swing.JFrame {
             Reportes R=new Reportes();
             
             R.addParametro("idOperacion", aprobadasTBL.getValueAt(aprobadasTBL.getSelectedRow(), 0).toString());
-            
+            archivoAdjunto( aprobadasTBL.getValueAt(aprobadasTBL.getSelectedRow(), 0).toString() );
             archivoProperties A=new archivoProperties("reportParams.properties");
             R.setSubreportDir(A.getProperties("SUBREPORTDIR")+"\\requisiciones\\");
             R.setImageReportDir(A.getProperties("IMAGEREPORTDIR"));
@@ -1066,6 +1117,7 @@ public class requerimientos_ifz extends javax.swing.JFrame {
     private javax.swing.JTextArea descripcionTXT;
     private javax.swing.JComboBox<String> empleadosCMB;
     private javax.swing.JTextField empleadosTXT;
+    private com.toedter.calendar.JDateChooser fechaCorteDTE;
     private com.toedter.calendar.JDateChooser fechaEntregaDTE;
     private com.toedter.calendar.JDateChooser fechaRequisicionDTE;
     private javax.swing.JButton jButton1;
@@ -1080,6 +1132,7 @@ public class requerimientos_ifz extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
